@@ -1,0 +1,497 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="ja">
+<HEAD> 
+<LINK REL="stylesheet" TYPE="text/css" HREF="style.css">
+<LINK rel="PRE"  href="jugyo.html"> 
+<TITLE>RSA暗号</TITLE>
+<SCRIPT type="text/javascript" >
+
+<!----
+/*最大公約数の計算*/
+function calgcd()
+{
+var n = parseInt(document.gcdform.a1.value);
+var m = parseInt(document.gcdform.b1.value);
+var m1;
+		if (m==0){m=n;n=0;}
+		while ((n % m) != 0) {
+			m1=n%m;
+			n = m;
+			m = m1;
+			}
+		document.gcdform.gcd1.value = m;
+}
+/*ax+by=gcd(a,b)をみたす整数xとyを計算 */
+function calxy()
+{
+	var n = parseInt(document.calxyform.a.value);
+	var m = parseInt(document.calxyform.b.value);
+	var x1=1;
+	var y1=0;
+	var x2=0;
+	var y2=1;
+	var  m1, x3, y3;
+		while (( n % m) != 0) {
+			x3=x2;
+			y3=y2;
+			x2=x1-x2*Math.floor(n/m);
+			y2=y1-y2*Math.floor(n/m);
+			x1=x3;
+			y1=y3;
+			m1 = n % m;
+			n = m;
+			m = m1;
+		}
+
+		document.calxyform.gcd.value = m;
+		document.calxyform.x.value=x2;
+		document.calxyform.y.value=y2;
+}
+
+
+/*素数生成*/
+ function primecheck(x)
+{var sgn=0;
+var  t;
+if ((x%2)==0){
+							if (x > 2){sgn=0}
+							else {sgn=1}
+							}
+else {t=3;
+ while ((x%t)!=0 && t <= Math.sqrt(x))
+ {t=t+2;}
+ if (t <= Math.sqrt(x)) {sgn=0}
+ else {sgn=1}
+ }
+ return(sgn);}
+ 
+
+ function gen_prime()
+ {
+ var x1=parseInt(document.genprimeform.d1.value);
+ 
+  for(var i=0;; i++){var u4=primecheck(x1+i);
+ if (u4==1){break;}}
+ 
+ document.genprimeform.prime.value=x1+i;
+}
+
+/*求めた素数をpとqに設定*/
+
+function set_p()
+{
+document.pqform.p.value=parseInt(document.genprimeform.prime.value);
+document.genprimeform.d1.value="";
+document.genprimeform.prime.value="";
+document.genprimeform.d1.focus();
+}
+function set_q()
+{
+document.pqform.q.value=parseInt(document.genprimeform.prime.value);
+document.genprimeform.d1.value="";
+document.genprimeform.prime.value="";
+document.genprimeform.d1.focus();
+}
+
+
+/*n=p*qとm=(p-1)*(q-1)を計算*/
+function nphi()
+{
+	document.nphiform.n.value = parseInt(document.pqform.p.value)*parseInt(document.pqform.q.value);
+	document.nphiform.phi.value=(parseInt(document.pqform.p.value)-1)*(parseInt(document.pqform.q.value)-1);
+}
+
+/*上で計算したnを分解のフォームに設定*/
+
+function set_n()
+{
+document.factorform.d2.value=parseInt(document.nphiform.n.value)
+}
+
+/*nを素数と整数の積に分解する*/
+
+	/*素数チェック*/
+	function primecheck_text()
+	{
+	var p1=parseInt(document.primeform.p.value)
+	if ((p1%2)==0){
+							if (p1 > 2){document.primeform.kekka.value="素数ではない"}
+							else {document.primeform.kekka.value="素数"}
+							}
+	else {i=3;
+	 while ((p1%i)!=0 && i < Math.sqrt(p1))
+	 {i=i+2;}
+ 	if (i < Math.sqrt(p1)) {document.primeform.kekka.value="素数ではない"}
+ 	else {document.primeform.kekka.value="素数"}
+	 }}
+
+
+	/*分解*/
+	function factor()
+	{
+	var x2=parseInt(document.factorform.d2.value);
+
+	for (i=2;; i++){if (x2%i==0){break;}}
+
+	document.factorform.x.value=i;
+	document.factorform.y.value=x2/i;
+	}
+
+
+/*eの値のチェック*/
+function checke()
+{
+	if (document.nphiform.phi.value==""){document.checkeform.gcd.value = "mの値を決めて下さい"}
+	else {
+	if (document.checkeform.e.value==""){document.checkeform.gcd.value = "eの値を入れて下さい"}
+	else {
+	var n = parseInt(document.nphiform.phi.value);
+	var m = parseInt(document.checkeform.e.value);
+	var m1;
+	while (( n % m) != 0) {
+		m1 = n % m;
+		n = m;
+		m = m1;
+	}
+	if (m==1){document.checkeform.gcd.value = "互いに素です"}
+	else {document.checkeform.gcd.value = "互いに素ではありません"}
+	}}
+}
+
+/*ed≡1(mod m)をみたす整数dを求める*/
+function himitsu()
+{
+	var n3, m3, m1,x1,x2,y1,y2,x3,y3
+n3 = parseInt(document.checkeform.e.value);
+m3 = parseInt(document.nphiform.phi.value);
+x1=1;
+y1=0;
+x2=0;
+y2=1;
+			while ((n3 % m3) != 0) 
+			{
+			m1 = n3 % m3
+			x3=x2;
+			y3=y2;
+			x2=x1-x2*Math.floor(n3/m3);
+			y2=y1-y2*Math.floor(n3/m3);
+			x1=x3;
+			y1=y3;
+			n3 = m3;
+			m3 = m1;
+			}
+		if (x2 > 0) {document.himitsuform.secret.value=x2;dd=x2} 
+		else {document.himitsuform.secret.value=(x2 + parseInt(document.nphiform.phi.value));dd=(x2 + v1)}
+		
+document.angokaform.n.value=document.nphiform.n.value;
+document.angokaform.e.value=document.checkeform.e.value;
+document.fukugokaform.n.value=document.nphiform.n.value;
+document.fukugokaform.d.value=document.himitsuform.secret.value;}
+
+/*ここから暗号化と復号化*/
+
+/*べきのmod計算*/
+
+function pmod(m,e,n)
+{
+var i, j,aa,xx
+j=1;
+aa=e;
+xx=m;
+i=0;
+while (aa!=0)
+	{
+	if ((aa%2)==1)
+		{
+		j=(j*xx)%n;
+		}
+	aa=Math.floor(aa/2);
+	xx=(xx*xx)%n;
+	i++;
+	}
+return(j);
+}
+
+/*暗号化*/
+function angoka()
+{
+ if(document.angokaform.e.value=="")
+			{if(document.angokaform.n.value=="")
+			{document.angokaform.angobun.value = pmod(parseInt(document.angokaform.hirabun.value),parseInt(document.checkeform.e.value),parseInt(document.nphiform.n.value));
+			 document.angokaform.e.value=parseInt(document.checkeform.e.value);
+			 document.angokaform.n.value=parseInt(document.nphiform.n.value)}
+			else
+			{document.angokaform.angobun.value = pmod(parseInt(document.angokaform.hirabun.value),parseInt(document.checkeform.e.value),parseInt(document.angokaform.n.value));
+			 document.angokaform.e.value=parseInt(document.checkeform.e.value)}
+			}
+	else {
+			if(document.angokaform.n.value=="")
+			{document.angokaform.angobun.value = pmod(parseInt(document.angokaform.hirabun.value),parseInt(document.angokaform.e.value),parseInt(document.nphiform.n.value));
+			 document.angokaform.n.value=parseInt(document.nphiform.n.value)}
+			else
+			{document.angokaform.angobun.value = pmod(parseInt(document.angokaform.hirabun.value),parseInt(document.angokaform.e.value),parseInt(document.angokaform.n.value))};
+			}
+}
+
+function angounum(a)
+{
+jj=pmod(a,parseInt(document.angokaform.e.value),parseInt(document.angokaform.n.value));
+return(pmod(a,parseInt(document.angokaform.e.value),parseInt(document.angokaform.n.value)));
+}
+
+/*暗号Cを復号化のフォームの暗号として設定*/
+
+function set_c()
+{
+document.fukugokaform.angobun.value=parseInt(document.angokaform.angobun.value)
+}
+
+/*復号化*/
+
+function fukugoka(form)
+{
+ if(document.fukugokaform.d.value=="")
+	{if(document.fukugokaform.n.value=="")
+		{document.fukugokaform.hirabun.value = pmod(parseInt(document.fukugokaform.angobun.value),parseInt(document.himitsuform.secret.value),parseInt(document.nphiform.n.value));
+		document.fukugokaform.d.value=parseInt(document.himitsuform.secret.value);
+		document.fukugokaform.n.value=parseInt(document.nphiform.n.value)}
+	else
+		{document.fukugokaform.hirabun.value = pmod(parseInt(document.fukugokaform.angobun.value),parseInt(document.himitsuform.secret.value),parseInt(document.fukugokaform.n.value));
+		document.fukugokaform.d.value=parseInt(document.himitsuform.secret.value)}
+	}
+else {
+	if(document.fukugokaform.n.value=="")
+		{document.fukugokaform.hirabun.value = pmod(parseInt(document.fukugokaform.angobun.value),parseInt(document.fukugokaform.d.value),parseInt(document.nphiform.n.value));
+		 document.fukugokaform.n.value=parseInt(document.nphiform.n.value)}
+	else
+		{document.fukugokaform.hirabun.value = pmod(parseInt(document.fukugokaform.angobun.value),parseInt(document.fukugokaform.d.value),parseInt(document.fukugokaform.n.value))};
+	}
+}
+
+function fukugounum(a)
+{
+jj=pmod(a,parseInt(document.fukugokaform.d.value),parseInt(document.fukugokaform.n.value));
+return(jj);
+}
+
+
+/*ここからはコード化--暗号化--復号化--デコード*/
+
+function coding()
+{xx1=document.henkanform.hira.value;
+ while ( xx1.indexOf("a")!=-1){xx1= xx1.replace("a", "11");};
+ while ( xx1.indexOf("b")!=-1){xx1= xx1.replace("b", "12");};
+ while ( xx1.indexOf("c")!=-1){xx1= xx1.replace("c", "13");};
+ while ( xx1.indexOf("d")!=-1){xx1= xx1.replace("d", "14");};
+ while ( xx1.indexOf("e")!=-1){xx1= xx1.replace("e", "15");};
+ while ( xx1.indexOf("f")!=-1){xx1= xx1.replace("f", "16");};
+ while ( xx1.indexOf("g")!=-1){xx1= xx1.replace("g", "17");};
+ while ( xx1.indexOf("h")!=-1){xx1= xx1.replace("h", "18");};
+ while ( xx1.indexOf("i")!=-1){xx1= xx1.replace("i", "19");};
+ while ( xx1.indexOf("j")!=-1){xx1= xx1.replace("j", "20");};
+ while ( xx1.indexOf("k")!=-1){xx1= xx1.replace("k", "21");};
+ while ( xx1.indexOf("l")!=-1){xx1= xx1.replace("l", "22");};
+ while ( xx1.indexOf("m")!=-1){xx1= xx1.replace("m", "23");};
+ while ( xx1.indexOf("n")!=-1){xx1= xx1.replace("n", "24");};
+ while ( xx1.indexOf("o")!=-1){xx1= xx1.replace("o", "25");};
+ while ( xx1.indexOf("p")!=-1){xx1= xx1.replace("p", "26");};
+ while ( xx1.indexOf("q")!=-1){xx1= xx1.replace("q", "27");};
+ while ( xx1.indexOf("r")!=-1){xx1= xx1.replace("r", "28");};
+ while ( xx1.indexOf("s")!=-1){xx1= xx1.replace("s", "29");};
+ while ( xx1.indexOf("t")!=-1){xx1= xx1.replace("t", "30");};
+ while ( xx1.indexOf("u")!=-1){xx1= xx1.replace("u", "31");};
+ while ( xx1.indexOf("v")!=-1){xx1= xx1.replace("v", "32");};
+ while ( xx1.indexOf("w")!=-1){xx1= xx1.replace("w", "33");};
+ while ( xx1.indexOf("x")!=-1){xx1= xx1.replace("x", "34");};
+ while ( xx1.indexOf("y")!=-1){xx1= xx1.replace("y", "35");};
+ while ( xx1.indexOf("z")!=-1){xx1= xx1.replace("z", "36");};
+ while ( xx1.indexOf(" ")!=-1){xx1= xx1.replace(" ", "37");};
+ if ( xx1.length%4!=0){xx1=xx1+"10"};
+ document.henkanform.kekka.value=xx1;
+ }
+ 
+ function henkan()
+{
+xx1=document.henkanform.kekka.value
+ yy="";
+ for (i=0;i < Math.floor(xx1.length/4);i++){
+ yy=yy+angounum(parseInt(xx1.substring(4*i, 4*i+4)))+" ";
+}
+document.henkanform.real.value=yy;}
+
+function fukugouhenkan()
+{
+zz="";
+yy1=document.henkanform.real.value;
+jj=0;
+while ( yy1.indexOf(" ",jj)!=-1)
+{
+uu=yy1.indexOf(" ",jj);
+zz=zz+fukugounum(yy1.substring(jj,uu));
+jj=uu+1;
+}
+document.fukugouhenkanform.fukugou.value=zz;
+}
+
+function owari()
+{
+tt1=document.fukugouhenkanform.fukugou.value;
+ss="";
+for (i=0;i< Math.floor(tt1.length/2);i++)
+{ss1=parseInt(tt1.substring(2*i,2*i+2));
+switch (ss1) {
+    case 11:
+        ss= ss+"a"
+        break;
+    case 12:
+        ss= ss+"b"
+        break;
+    case 13:
+        ss= ss+"c"
+        break;
+    case 14:
+        ss= ss+"d"
+        break;
+    case 15:
+        ss= ss+"e"
+        break;
+    case 16:
+        ss= ss+"f"
+        break;
+    case 17:
+        ss= ss+"g"
+        break;
+    case 18:
+        ss= ss+"h"
+        break;
+    case 19:
+        ss= ss+"i"
+        break;
+    case 20:
+        ss= ss+"j"
+        break;
+    case 21:
+        ss= ss+"k"
+        break;
+    case 22:
+        ss= ss+"l"
+        break;
+    case 23:
+        ss= ss+"m"
+        break;
+    case 24:
+        ss= ss+"n"
+        break;
+    case 25:
+        ss= ss+"o"
+        break;
+    case 26:
+        ss= ss+"p"
+        break;
+    case 27:
+        ss= ss+"q"
+        break;
+    case 28:
+        ss= ss+"r"
+        break;
+    case 29:
+        ss= ss+"s"
+        break;
+    case 30:
+        ss= ss+"t"
+        break;
+    case 31:
+        ss= ss+"u"
+        break;
+    case 32:
+        ss= ss+"v"
+        break;
+    case 33:
+        ss= ss+"w"
+        break;
+    case 34:
+        ss= ss+"x"
+        break;
+    case 35:
+        ss= ss+"y"
+        break;
+    case 36:
+        ss= ss+"z"
+        break;
+    case 37:
+        ss= ss+" "
+        break;
+    default:
+        break;
+    };
+	}
+document.decodeform.text2.value=ss;
+}
+function samplevalue()
+{
+document.angokaform.n.value=30883;
+document.angokaform.e.value=13;
+document.fukugokaform.n.value=30883;
+document.fukugokaform.d.value=14053;
+document.henkanform.hira.focus();}
+
+function allclear()
+{
+document.henkanform.hira.value="";
+document.henkanform.kekka.value="";
+document.henkanform.real.value="";
+document.fukugouhenkanform.fukugou.value="";
+document.decodeform.text2.value="";
+document.henkanform.hira.focus();
+}
+ //-->
+
+</SCRIPT>
+</HEAD>
+
+<BODY >
+
+<h2>RSA暗号の鍵生成手順</h2>
+<h4>（１）相異なる素数pとqを選ぶ。</h4>
+<center>
+<form name="pqform">
+素数p=<input type="text" name="p" size=10>　素数q=<input type="text" name="q" size=10>
+</form>
+</center>
+<h4>（２）n=p×qとm=(p-1)×(q-1)を計算する。</h4>
+<form name="nphiform">
+<center>
+<input type="button" value="計算" onclick="nphi()">　公開鍵その１　n=<input type="text" name="n" size=20>
+</center>
+　　<center>　　　　　　　m=<input type="text" name="phi" size=20><---これは非公開</center>
+</form>
+<p>
+
+<h4>（３）1 < e < n となるe で、mとは互いに素な数を選ぶ。mの約数ではない小さな素数を選べば良い。</h4>
+<center>
+<form name="checkeform">
+（入力）　公開鍵その２　e=<input type="text" name="e" size=10></center>
+
+<center>
+<input type="button" value="チェック" onclick="checke()">
+<input type="text" name="gcd" size=30></form></center>
+<h4>（４）nとeを公開する。</h4>
+<h4>（５）ed÷mの余りが１となる整数d(0 < d <m)を求める。</h4>
+　　<center><form name="himitsuform"><input type="button" value="計算" onclick="himitsu()">
+秘密鍵d=<input type="text" name="secret" size=20></form></center>
+
+<h2>暗号化と復号化</h2>
+<h4>（６） 平文をコード化した数をXとする。Xはn未満の整数。nより大きいときはもとの文を分割して考える。C=（X<sup>e</sup> ÷ n の余り）を計算して送信する。</h4>
+<center><font size=1>（上で計算した公開鍵e,nを使うときはe,nの値はそのままでかまいません。入力し直すときはクリアしてください。）</font>
+</center>
+<form name="angokaform">
+<center>（入力）　X=<input type="text" name="hirabun" size=10>　公開鍵e=<input type="text" name="e" size=10>　公開鍵n=<input type="text" name="n" size=10></center>
+<center><input type="reset" value="クリア"><input type="button" value="計算" onclick="angoka()">　暗号C=<input type="text" name="angobun" size=10></form></center>
+<h4>（７）受信した暗号CからC<sup>d</sup> ÷ n の余りを計算すると、Mが得られる。</h4>
+<center><font size=1>（上で計算した公開鍵nと暗号鍵dを使うときはd,nの値はそのままでかまいません。入力し直すときはクリアしてください。<br>上の暗号Cの値を使う場合は右のCのボタンをクリックして下さい。）<input type="button" value="C" onclick="set_c()"></font></center>
+<form name="fukugokaform"><center>
+（入力）　暗号C=<input type="text" name="angobun" size=10>　秘密鍵d=<input type="text" name="d" size=10>　公開鍵n=<input type="text" name="n" size=10></center>
+<center><input type="reset" value="クリア"><input type="button" value="計算" onclick="fukugoka()">　M=<input type="text" name="hirabun" size=10></form></center>
+</body>
+</html>
