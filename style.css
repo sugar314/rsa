@@ -1,0 +1,139 @@
+BODY{font-size:90%;
+  text-align:left;
+  text-indent:0pt;
+  margin:5px 5px;}
+H1{width: 100%;
+  text-align:center;
+  color: #ffffff;
+  font-size:160%;
+  font-weight: normal;
+  background-color: #507080;
+  margin:10px 0px;
+  padding: 4px 2px 2px}
+H2{width: 100%;
+  text-align:center;
+  color: #ffffff;
+  font-size:150%;
+  font-weight: normal;
+  background-color: #507080;
+  margin:10px 0px;
+  padding: 4px 2px 2px}
+div.pagetop{width: 100%;
+  text-align:center;
+  color: #ffffff;
+  font-size:150%;
+  font-weight: normal;
+  letter-spacing: 0.05em;
+background-color: #507080;
+  margin:10px 0px;
+  padding: 4px 2px 2px}
+H3{width: 100%;
+  text-align:left;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1em;
+  background-color: green;
+  padding: 4px 2px 2px}
+  
+div.heading{width: 100%;
+  text-align:center;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 100%;
+  background-color: #4F1414;
+  padding: 4px 2px 2px}
+  
+  div.linklisttitle{width: 100%;
+  text-align:center;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 100%;
+  background-color: green;
+  padding: 4px 2px 2px}
+
+div.group{font-size: 100%;
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom:1em;
+  border-width: thin 0.6em thin 0.6em;
+  border-style: solid none;
+  border-color: white;
+  padding: 0.4em 0;
+}
+div.group1{font-size: 100%;
+  text-align: left;
+  margin-top: 0.4em;
+  margin-bottom:0em;
+  border-width: 1 0 0 0;
+  border-style: solid none;
+  border-color: green;
+  padding: 1em 0;
+}
+div.group2{font-size: 100%;
+  text-align: left;
+  margin-top: 1em;
+  margin-bottom:1em;
+  border-width: thin 0.6em thin 0.6em;
+  border-style: solid none;
+  border-color: white;
+  padding: 0 0;
+}
+div.group3{font-size: 100%;
+color: #8484ff;
+  text-align: center;
+  border-width: thin 0.6em thin 0.6em;
+  border-style: solid none;
+  border-color: white;
+  padding: 0 0;
+}
+div.group4{font-size: 150%;
+color: #ff0000;
+  text-align: left;
+  border-width: thin 0.6em thin 0.6em;
+  border-style: solid none;
+  border-color: white;
+  padding: 0 0;
+}
+
+div.image{margin: 5em;text-align: center;
+}
+div.lab{text-align: center;}
+div.migiyose{text-align: right;}
+div.shurui	{
+font-size:100%;			
+color:black;			
+font-weight:bold;		
+margin-left:1px;		
+margin-right:1px;		
+padding:4px;			
+border-width:0 0 1 12;		
+border-style:solid;		
+border-color:#008000		
+}
+
+td.subhead{padding:5 15 0 2;}
+table.ln{font-size: 100%;}
+span.term{padding: 0px 2px;}
+span.attention{color:red;}
+A:link{color: #0000ff; text-decoration: none;}
+A:visited{color: #0000ff; text-decoration: none;}
+A:active{color: #ff0000; text-decoration: none;}
+A:hover{color: #ff0000; text-decoration: none;}
+A.position:link{color: #ffffff; text-decoration: none;}
+A.position:visited{color: #ffffff; text-decoration: none;}
+A.position:active{color: #ffff00;}
+A.position:hover{color: #ffff00;}
+A.reference:link{color: #ffffff; text-decoration: none;}
+A.reference:visited{color: #ffffff; text-decoration: none;}
+A.reference:active{color: #ffff00;}
+A.reference:hover{color: #ffff00;}
+A.title:link{color: #ffffff; text-decoration: none;}
+A.title:visited{color: #ffffff; text-decoration: none;}
+A.title:active{color: #ffff00;}
+A.title:hover{color: #ffff00;}
+A.heading2:link{color: #FFFFFF;  text-decoration: none;}
+A.heading2:visited{color: #FFFFFF;  text-decoration: none;}
+A.heading2:active{color: #FFFFFF;}
+A.heading2:hover{color: #FFFFFF;}
+UL LI {list-style-image: url(hishi.png); padding: 0.5px 0;}
+HR{color:green}
